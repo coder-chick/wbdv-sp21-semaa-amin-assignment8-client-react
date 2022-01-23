@@ -1,0 +1,93 @@
+import React, {useEffect} from 'react';
+import {connect} from "react-redux";
+import ParagraphWidget from "./paragraph-widget";
+import HeadingWidget from "./heading-widget";
+import ImageWidget from "./image-widget";
+import ListWidget from "./list-widget";
+import {useParams} from "react-router-dom";
+import widgetActions from "../../actions/widget-actions";
+ 
+const WidgetList = ({
+    widgets = [],
+    updateWidget,
+    deleteWidget,
+    createWidget,
+    findWidgetsForTopic,
+    resetWidgets
+}) => {
+    const IMAGE = "IMAGE";
+    const HEADING = "HEADING";
+    const LIST = "LIST";
+    const PARAGRAPH = "PARAGRAPH";    
+    const {layout, courseId, moduleId, lessonId, topicId} = useParams();
+
+    useEffect(() => {
+        if (topicId !== "undefined" && typeof topicId !== "undefined")
+            findWidgetsForTopic(topicId);
+        else
+            resetWidgets([]);
+    }, [topicId]);
+
+    useEffect(() => {
+        if (topicId !== "undefined" && typeof topicId !== "undefined")
+            findWidgetsForTopic(topicId);
+        else
+            resetWidgets([]);
+    }, [lessonId]);
+
+    return (<div className="widget-module">
+            <div className="row justify-content-end">
+                <div className="col-1">
+                    <i className="btn btn-outline-dark fas fa-plus float-right"
+                        onClick = {() => {createWidget(topicId)}}></i>
+                </div>
+            </div>
+            <ul className="list-group">
+                {
+                    widgets.map(w => {
+                        console.log(w["type"]);
+                        return <li className="list-group-item" key={w.id}>
+                        {
+                            w["type"] === "PARAGRAPH" &&
+                                <ParagraphWidget widget={w} updateWidget={updateWidget} deleteWidget={deleteWidget} />
+                        }
+                        {   
+                            w["type"] === "HEADING" &&
+                                <HeadingWidget widget={w} updateWidget={updateWidget} deleteWidget={deleteWidget} />
+                        }
+                        {    
+                            w["type"] === "IMAGE" &&
+                                <ImageWidget widget={w} updateWidget={updateWidget} deleteWidget={deleteWidget} />
+                        }
+                        {    
+                            w["type"] === LIST &&
+                                <ListWidget widget={w} updateWidget={updateWidget} deleteWidget={deleteWidget} />
+                        }                                                 
+                        </li>
+                    })
+                }
+                
+            </ul>
+        </div>)
+};
+
+const stpm = (state) => ({
+    widgets : state.widgetReducer.widgets
+})
+
+const dtpm = (dispatch) => ({
+    findWidgetsForTopic : (topicId) => widgetActions.findWidgetsForTopic(dispatch, topicId),
+    updateWidget : (widget) => widgetActions.updateWidget(dispatch, widget),
+    deleteWidget : (widget) => widgetActions.deleteWidget(dispatch, widget),
+    createWidget : (topicId) => {
+        console.log(`Hi~ ${topicId}`);
+        if (topicId !== "undefined" && typeof topicId !== "undefined") {
+            widgetActions.createWidget(dispatch, topicId);
+        } else {
+            alert("Please select a topic");
+        }
+    },
+    resetWidgets : () => widgetActions.resetWidgets(dispatch)
+})
+
+export default connect(stpm, dtpm)(WidgetList);

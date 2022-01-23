@@ -1,0 +1,43 @@
+.wbdv-course-dashboard {
+    height: 100%;
+}
+
+.wbdv-course-lessons .nav-link {
+    background-color: beige  !important;
+    margin-left: 5%;
+    margin-right: 5%;
+    color: rgb(26, 150, 68);
+    display: block;
+}
+
+.wbdv-course-lessons .nav-link.active {
+    background-color: rgb(25, 233, 25) !important;
+}
+
+
+.wbdv-course-topics .nav-link {
+    background-color: beige !important;
+    border: 1px solid navy;
+    color: paleturquoise;
+}
+
+.wbdv-course-topics .nav-link.active {
+    background-color: rgb(100, 237, 130) !important;
+}
+
+.wbdv-course-module {
+    background: navy;
+    height: 100vh;
+}
+
+.wbdv-course-module a {
+    background-color: lightgrey;
+   
+    border: 1px solid paleturquoise;
+    background-color: beige;
+}
+
+.list-group-item.active {
+    background-color: rgb(95, 211, 41) !important;
+    border: 1px solid paleturquoise !important;
+}
